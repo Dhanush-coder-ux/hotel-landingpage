@@ -55,10 +55,10 @@ export default function Footer() {
           </h2>
     
             <a 
-              href="tel:8899223344" // Added the tel: protocol here
+              href="tel:8838078022" // Added the tel: protocol here
               className="font-jost font-normal text-[12px] tracking-[0.25em] uppercase px-12 py-[18px] bg-[#895737] text-[#F3E9DC] border-none cursor-pointer transition-colors duration-300 shadow-[0_8px_48px_rgba(137,87,55,0.35)] hover:bg-[#C08552]"
             >
-              8899223344
+            8838078022
             </a>
         </div>
       </Reveal>
