@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Maison Aurel — Refactored</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Jost:wght@200;300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #F3E9DC; }
+  ::-webkit-scrollbar-thumb { background: #895737; border-radius: 2px; }
+
+  .font-display      { font-family: 'DM Serif Display', Georgia, serif; }
+  .font-jost         { font-family: 'Jost', sans-serif; }
+  .font-baskerville  { font-family: 'Libre Baskerville', Georgia, serif; }
+
+  /* ── Keyframes ── */
+  @keyframes rise      { from { transform:translateY(110%);opacity:0 } to { transform:translateY(0);opacity:1 } }
+  @keyframes marquee   { from { transform:translateX(0) } to { transform:translateX(-50%) } }
+  @keyframes leafFloat { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-18px) rotate(4deg)} }
+  @keyframes loaderBar { to { width:100% } }
+
+  /* ── Utility ── */
+  .word-wrap  { overflow:hidden; display:inline-block; }
+  .word-inner { display:inline-block; animation: rise 1.2s cubic-bezier(.16,1,.3,1) both; }
+
+  .marquee-track {
+    display:flex; gap:56px;
+    animation: marquee 28s linear infinite;
+    white-space:nowrap;
+  }
+  .loader-bar { animation: loaderBar 1.6s .5s ease forwards; width:0; }
+  .leaf-float { animation: leafFloat 2.5s ease-in-out infinite; }
+
+  /* ── Nav link ── */
+  .nav-link {
+    font-family:'Jost',sans-serif; font-weight:300; font-size:12px;
+    letter-spacing:.18em; text-transform:uppercase;
+    color:rgba(94,48,35,.5); text-decoration:none; position:relative; transition:color .35s;
+  }
+  .nav-link::after {
+    content:''; position:absolute; bottom:-3px; left:0;
+    width:0; height:1px; background:#895737; transition:width .4s;
+  }
+  .nav-link:hover { color:#5E3023; }
+  .nav-link:hover::after { width:100%; }
+
+  /* ── Feature card ── */
+  .feature-card { transition: background .4s, transform .3s, box-shadow .4s; }
+  .feature-card:hover { background:#fff!important; transform:translateY(-4px); box-shadow:0 24px 64px rgba(94,48,35,.1); }
+
+  /* ── Room image ── */
+  .room-img { transition: transform 1.6s ease, filter 1s; }
+  .room-img:hover { transform:scale(1.04); filter:brightness(.8) saturate(1)!important; }
+
+  /* ── Philosophy image ── */
+  .phi-img { transition: transform 1.6s ease; }
+  .phi-img:hover { transform:scale(1.04); }
+
+  /* ── Intro overlay ── */
+  .intro-overlay {
+    position:fixed; inset:0; z-index:8000;
+    background:#5E3023;
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    transition: opacity 1.4s ease, visibility 1.4s;
+  }
+  .intro-overlay.out { opacity:0; visibility:hidden; pointer-events:none; }
+
+  /* ── Scroll progress ── */
+  .scroll-progress {
+    position:fixed; top:0; left:0; height:2px;
+    background: linear-gradient(90deg, #895737, #C08552);
+    z-index:9999; transition:width .15s;
+  }
+
+  /* ─── Tailwind-like helpers ─── */
+  /* Layout */
+  .flex       { display:flex }
+  .flex-col   { flex-direction:column }
+  .flex-wrap  { flex-wrap:wrap }
+  .items-center { align-items:center }
+  .items-end  { align-items:flex-end }
+  .justify-center { justify-content:center }
+  .justify-between { justify-content:space-between }
+  .gap-2  { gap:.5rem }  .gap-3  { gap:.75rem } .gap-4  { gap:1rem }
+  .gap-5  { gap:1.25rem } .gap-8  { gap:2rem }  .gap-12 { gap:3rem }
+  .gap-16 { gap:4rem }   .gap-20 { gap:5rem }
+  .grid   { display:grid }
+  .grid-cols-1  { grid-template-columns:1fr }
+  .hidden { display:none }
+  .block  { display:block }
+  .relative { position:relative }
+  .absolute { position:absolute }
+  .fixed    { position:fixed }
+  .inset-0  { top:0;right:0;bottom:0;left:0 }
+  .overflow-hidden { overflow:hidden }
+  .overflow-x-hidden { overflow-x:hidden }
+  .text-center { text-align:center }
+  .text-left   { text-align:left }
+  .italic  { font-style:italic }
+  .not-italic { font-style:normal }
+  .no-underline { text-decoration:none }
+  .cursor-pointer { cursor:pointer }
+  .cursor-default { cursor:default }
+  .border-none { border:none }
+  .select-none { user-select:none }
+  .pointer-events-none { pointer-events:none }
+  .shrink-0 { flex-shrink:0 }
+  .w-full  { width:100% }
+  .h-full  { height:100% }
+  .h-screen { height:100vh }
+  .object-cover { object-fit:cover }
+  .rounded-full { border-radius:9999px }
+  .mx-auto { margin-left:auto; margin-right:auto }
+  .translate-x-1\/2 { transform:translateX(-50%) }
+  .z-50  { z-index:50 }
+  .z-500 { z-index:500 }
+  .z-550 { z-index:550 }
+  .z-600 { z-index:600 }
+  .z-9999 { z-index:9999 }
+
+  /* Spacing */
+  .p-0   { padding:0 }
+  .px-6  { padding-left:1.5rem; padding-right:1.5rem }
+  .px-7  { padding-left:1.75rem; padding-right:1.75rem }
+  .px-8  { padding-left:2rem; padding-right:2rem }
+  .px-9  { padding-left:2.25rem; padding-right:2.25rem }
+  .px-12 { padding-left:3rem; padding-right:3rem }
+  .px-14 { padding-left:3.5rem; padding-right:3.5rem }
+  .px-20 { padding-left:5rem; padding-right:5rem }
+  .py-3  { padding-top:.75rem; padding-bottom:.75rem }
+  .py-4  { padding-top:1rem; padding-bottom:1rem }
+  .py-7  { padding-top:1.75rem; padding-bottom:1.75rem }
+  .py-9  { padding-top:2.25rem; padding-bottom:2.25rem }
+  .py-12 { padding-top:3rem; padding-bottom:3rem }
+  .py-16 { padding-top:4rem; padding-bottom:4rem }
+  .py-18 { padding-top:4.5rem; padding-bottom:4.5rem }
+  .py-20 { padding-top:5rem; padding-bottom:5rem }
+  .py-28 { padding-top:7rem; padding-bottom:7rem }
+  .mb-2  { margin-bottom:.5rem }  .mb-3  { margin-bottom:.75rem }
+  .mb-4  { margin-bottom:1rem }   .mb-5  { margin-bottom:1.25rem }
+  .mb-6  { margin-bottom:1.5rem } .mb-7  { margin-bottom:1.75rem }
+  .mb-9  { margin-bottom:2.25rem }.mb-11 { margin-bottom:2.75rem }
+  .mb-12 { margin-bottom:3rem }   .mb-16 { margin-bottom:4rem }
+  .mb-20 { margin-bottom:5rem }   .mb-24 { margin-bottom:6rem }
+  .mt-2  { margin-top:.5rem }     .mt-4  { margin-top:1rem }
+  .mt-9  { margin-top:2.25rem }   .mt-11 { margin-top:2.75rem }
+  .mt-12 { margin-top:3rem }      .mt-24 { margin-top:6rem }
+  .ml-5  { margin-left:1.25rem }
+
+  /* Typography helpers */
+  .text-9px  { font-size:9px }
+  .text-10px { font-size:10px }
+  .text-11px { font-size:11px }
+  .text-13px { font-size:13px }
+  .text-14px { font-size:14px }
+  .text-15px { font-size:15px }
+  .text-16px { font-size:16px }
+  .text-19px { font-size:19px }
+  .text-22px { font-size:22px }
+  .text-24px { font-size:24px }
+  .text-28px { font-size:28px }
+  .font-light  { font-weight:300 }
+  .font-normal { font-weight:400 }
+  .leading-none  { line-height:1 }
+  .leading-tight { line-height:1.1 }
+  .leading-snug  { line-height:1.25 }
+  .leading-relaxed { line-height:1.6 }
+  .leading-loose { line-height:1.8 }
+  .leading-10  { line-height:1.9 }
+  .leading-195 { line-height:1.95 }
+  .leading-21  { line-height:2.1 }
+  .leading-2   { line-height:2 }
+  .tracking-wide    { letter-spacing:.05em }
+  .tracking-widest  { letter-spacing:.3em }
+  .tracking-4 { letter-spacing:.4em }
+  .tracking-45 { letter-spacing:.45em }
+  .tracking-5 { letter-spacing:.5em }
+  .uppercase  { text-transform:uppercase }
+
+  /* Borders */
+  .border-b { border-bottom-width:1px; border-bottom-style:solid }
+  .border-t { border-top-width:1px;    border-top-style:solid }
+  .border-4 { border:4px solid }
+
+  /* Transition */
+  .transition-all      { transition:all .3s }
+  .transition-colors   { transition:color .3s, background .3s }
+  .transition-opacity  { transition:opacity .4s }
+  .transition-transform { transition:transform .3s }
+  .duration-300 { transition-duration:.3s }
+  .duration-500 { transition-duration:.5s }
+
+  /* Shadow */
+  .shadow-none { box-shadow:none }
+
+  /* ─── Responsive breakpoints ─── */
+  @media(min-width:768px){
+    .md\:grid-cols-2  { grid-template-columns:repeat(2,1fr) }
+    .md\:order-1 { order:1 }
+    .md\:order-2 { order:2 }
+    .md\:block { display:block }
+    .md\:flex  { display:flex }
+    .md\:hidden { display:none }
+    .md\:grid-cols-footer { grid-template-columns:2fr 1fr 1fr 1.5fr }
+    .md\:px-14 { padding-left:3.5rem; padding-right:3.5rem }
+  }
+  @media(min-width:1024px){
+    .lg\:grid-cols-4 { grid-template-columns:repeat(4,1fr) }
+    .lg\:py-40  { padding-top:10rem; padding-bottom:10rem }
+    .lg\:py-32  { padding-top:8rem;  padding-bottom:8rem }
+    .lg\:px-18  { padding-left:4.5rem;  padding-right:4.5rem }
+    .lg\:px-72  { padding-left:18rem;  padding-right:18rem }
+    .lg\:mb-28  { margin-bottom:7rem }
+    .lg\:mb-20  { margin-bottom:5rem }
+    .lg\:gap-28 { gap:7rem }
+    .lg\:pt-32  { padding-top:8rem }
+    .lg\:min-h-620 { min-height:620px }
+    .lg\:block  { display:block }
+    .lg\:hidden { display:none }
+    .lg\:px-14  { padding-left:3.5rem; padding-right:3.5rem }
+  }
+  @media(min-width:1280px){
+    .xl\:px-20  { padding-left:5rem; padding-right:5rem }
+    .xl\:grid-cols-footer { grid-template-columns:2fr 1fr 1fr 1.5fr }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+/* ═══════════════ HOOKS ═══════════════ */
+function useScrollY() {
+  const [y, setY] = useState(0);
+  useEffect(() => {
+    const h = () => setY(window.scrollY);
+    window.addEventListener("scroll", h, { passive: true });
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+  return y;
+}
+
+function useInView(threshold = 0.12) {
+  const ref = useRef(null);
+  const [vis, setVis] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVis(true); obs.disconnect(); }
+    }, { threshold });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return [ref, vis];
+}
+
+function Reveal({ children, delay = 0, className = "" }) {
+  const [ref, vis] = useInView();
+  return (
+    <div ref={ref} className={className} style={{
+      opacity: vis ? 1 : 0,
+      transform: vis ? "translateY(0)" : "translateY(50px)",
+      transition: `opacity 1.2s cubic-bezier(.16,1,.3,1) ${delay}s, transform 1.2s cubic-bezier(.16,1,.3,1) ${delay}s`,
+    }}>
+      {children}
+    </div>
+  );
+}
+
+/* ═══════════════ DATA ═══════════════ */
+const ROOMS = [
+  {
+    id: "I", name: "The Champagne Suite", area: "85 m²",
+    tagline: "A private sanctuary of champagne hues and sculpted light.",
+    body: "Bathed in soft gold and morning quiet, the Champagne Suite unfolds across 85 square metres of curated restraint. Hand-laid stone floors meet bespoke furnishings commissioned from a single Florentine atelier.",
+    amenities: ["King Ciel · Cashmere Linens","Hammered Brass Soaking Tub","Private Walled Garden Terrace","In-Suite Sommelier Service","Bose Spatial Audio System","Grasse Fragrance Collection"],
+    accent: "#C08552",
+    image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1600&q=95&auto=format&fit=crop",
+  },
+  {
+    id: "II", name: "The Charcoal Residence", area: "110 m²",
+    tagline: "Where architecture becomes solitude.",
+    body: "Conceived as a study in deliberate darkness — deep tones that absorb, soothe, and hold. Raw concrete walls meet silk drapery in a dialogue between weight and weightlessness.",
+    amenities: ["Emperor Obsidian Headboard Bed","Steam Room · Single Stone","Curated Library of 200 Volumes","Rooftop Meditation Platform","Hästens Bespoke Mattress","Private Chef Arrangement"],
+    accent: "#895737",
+    image: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=1600&q=95&auto=format&fit=crop",
+  },
+];
+
+/* ═══════════════ NAVBAR ═══════════════ */
+function Navbar() {
+  const scrollY = useScrollY();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const scrolled = scrollY > 60;
+  const navLinks = ["Rooms","Philosophy","Experience"];
+
+  return (
+    <>
+      <nav style={{
+        position:"fixed", top:0, left:0, right:0, zIndex:500,
+        display:"flex", alignItems:"center", justifyContent:"space-between",
+        padding: scrolled ? "16px 56px" : "32px 56px",
+        transition:"all .5s cubic-bezier(.4,0,.2,1)",
+        backdropFilter: scrolled ? "blur(24px) saturate(1.6)" : "none",
+        backgroundColor: scrolled ? "rgba(243,233,220,.92)" : "transparent",
+        borderBottom: scrolled ? "1px solid rgba(137,87,55,.1)" : "1px solid transparent",
+      }}>
+        {/* Logo */}
+        <div style={{display:"flex",alignItems:"center",gap:12}}>
+          <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+            <path d="M32 4 C32 4, 12 18, 12 36 C12 48, 21 58, 32 58 C43 58, 52 48, 52 36 C52 18, 32 4, 32 4Z" stroke="#895737" strokeWidth="1.5" fill="rgba(192,133,82,.12)" />
+            <path d="M32 10 L32 54" stroke="rgba(137,87,55,.3)" strokeWidth="1" />
+            <circle cx="32" cy="36" r="3" fill="#895737" />
+          </svg>
+          <span className="font-display" style={{fontSize:22,color:"#5E3023",letterSpacing:".04em"}}>Maison Aurel</span>
+        </div>
+
+        {/* Desktop links */}
+        <div style={{display:"flex",gap:48,alignItems:"center"}} className="hide-mobile">
+          {navLinks.map(l => <a key={l} href={`#${l.toLowerCase()}`} className="nav-link">{l}</a>)}
+        </div>
+
+        {/* CTA */}
+        <button
+          className="font-jost hide-mobile"
+          style={{fontSize:11,letterSpacing:".2em",textTransform:"uppercase",fontWeight:400,padding:"12px 28px",border:"1.5px solid #895737",background:"transparent",color:"#895737",cursor:"pointer",transition:"all .3s"}}
+          onMouseEnter={e=>{e.currentTarget.style.background="#895737";e.currentTarget.style.color="#F3E9DC"}}
+          onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.color="#895737"}}
+        >Reserve Now</button>
+
+        {/* Hamburger */}
+        <button onClick={()=>setMenuOpen(!menuOpen)} className="show-mobile" style={{display:"none",flexDirection:"column",gap:6,cursor:"pointer",background:"none",border:"none",padding:0}}>
+          {[0,1,2].map(i=>(
+            <span key={i} style={{display:"block",width:26,height:1.5,background:"#895737",transition:".3s",
+              transform: menuOpen&&i===0?"rotate(45deg) translate(5px,5px)": menuOpen&&i===2?"rotate(-45deg) translate(5px,-5px)":"none",
+              opacity: menuOpen&&i===1?0:1}} />
+          ))}
+        </button>
+      </nav>
+
+      {/* Mobile menu */}
+      <div style={{position:"fixed",inset:0,zIndex:550,background:"rgba(94,48,35,.97)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:52,opacity:menuOpen?1:0,pointerEvents:menuOpen?"auto":"none",transition:"opacity .4s",backdropFilter:"blur(20px)"}}>
+        {navLinks.map(l=>(
+          <a key={l} href={`#${l.toLowerCase()}`} onClick={()=>setMenuOpen(false)} className="font-display" style={{fontSize:44,fontStyle:"italic",color:"#F3E9DC",textDecoration:"none"}}>{l}</a>
+        ))}
+        <button className="font-jost" style={{marginTop:8,fontSize:11,letterSpacing:".25em",textTransform:"uppercase",padding:"16px 48px",border:"none",background:"#895737",color:"#F3E9DC",cursor:"pointer"}}>Reserve</button>
+      </div>
+
+      <style>{`
+        @media(max-width:768px){
+          .hide-mobile{display:none!important}
+          .show-mobile{display:flex!important}
+        }
+      `}</style>
+    </>
+  );
+}
+
+/* ═══════════════ HERO ═══════════════ */
+function Hero({ introOut }) {
+  const scrollY = useScrollY();
+
+  const words = [
+    {text:"Where",  italic:false, delay:".35s", color:"#F3E9DC"},
+    {text:"Nature", italic:true,  delay:".5s",  color:"#C08552"},
+    {text:"Breathes",italic:false,delay:".65s", color:"#F3E9DC"},
+  ];
+
+  return (
+    <section style={{height:"100vh",position:"relative",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",background:"#5E3023"}}>
+
+      {/* Parallax bg */}
+      <div style={{position:"absolute",inset:0,backgroundImage:"url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=2400&q=90&auto=format&fit=crop')",backgroundSize:"cover",backgroundPosition:"center 30%",transform:`scale(1.06) translateY(${scrollY*.18}px)`,filter:"brightness(.38) saturate(.85)"}} />
+      <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom,rgba(94,48,35,.2) 0%,rgba(94,48,35,.1) 40%,rgba(94,48,35,.85) 100%)"}} />
+      <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at 30% 50%,rgba(192,133,82,.15) 0%,transparent 60%)"}} />
+
+      {/* Botanical corners */}
+      {[[{top:40,left:40},{}],[{top:40,right:40},{transform:"scaleX(-1)"}],[{bottom:40,left:40},{transform:"scaleY(-1)"}],[{bottom:40,right:40},{transform:"scale(-1,-1)"}]].map(([pos,xf],i)=>(
+        <svg key={i} style={{position:"absolute",...pos,opacity:.35,...xf}} width="80" height="80" viewBox="0 0 80 80" fill="none">
+          <path d="M4 4 Q40 4, 40 40" stroke="#C08552" strokeWidth="1" fill="none"/>
+          <path d="M4 4 Q4 40, 40 40" stroke="#C08552" strokeWidth="1" fill="none"/>
+          <circle cx="4" cy="4" r="2" fill="#C08552"/>
+          <path d="M12 4 Q28 4, 28 20" stroke="rgba(192,133,82,.4)" strokeWidth=".7" fill="none"/>
+          <path d="M4 12 Q4 28, 20 28" stroke="rgba(192,133,82,.4)" strokeWidth=".7" fill="none"/>
+        </svg>
+      ))}
+
+      {/* Content */}
+      <div style={{position:"relative",zIndex:2,textAlign:"center",padding:"0 32px",maxWidth:900}}>
+        <div style={{overflow:"hidden",marginBottom:36}}>
+          <div className="font-jost" style={{fontSize:11,letterSpacing:".5em",textTransform:"uppercase",color:"#C08552",opacity:introOut?1:0,animation:introOut?"rise .9s .1s both":"none"}}>
+            Provence · France &nbsp;·&nbsp; Est. MMXIX &nbsp;·&nbsp; Two Rooms Only
+          </div>
+        </div>
+
+        <h1 className="font-display" style={{fontWeight:400,lineHeight:.9,marginBottom:52,fontSize:"clamp(62px,11vw,130px)"}}>
+          {words.map(({text,italic,delay,color})=>(
+            <div key={text} className="word-wrap" style={{display:"block"}}>
+              <div className="word-inner" style={{fontStyle:italic?"italic":"normal",color,animationDelay:introOut?delay:"0s",animationPlayState:introOut?"running":"paused"}}>{text}</div>
+            </div>
+          ))}
+        </h1>
+
+        <div style={{overflow:"hidden"}}>
+          <div className="font-jost" style={{fontSize:14,letterSpacing:".15em",color:"rgba(243,233,220,.45)",fontWeight:300,opacity:introOut?1:0,animation:introOut?"rise .9s .85s both":"none"}}>
+            The estate, in every season, is entirely yours
+          </div>
+        </div>
+
+        <div style={{marginTop:52,display:"flex",gap:20,alignItems:"center",justifyContent:"center",flexWrap:"wrap",opacity:introOut?1:0,animation:introOut?"rise .9s 1.05s both":"none"}}>
+          <button className="font-jost" style={{fontWeight:400,fontSize:12,letterSpacing:".22em",textTransform:"uppercase",padding:"18px 52px",background:"#895737",color:"#F3E9DC",border:"none",cursor:"pointer",transition:"all .35s",boxShadow:"0 8px 40px rgba(137,87,55,.4)"}}
+            onMouseEnter={e=>{e.currentTarget.style.background="#C08552";e.currentTarget.style.boxShadow="0 12px 56px rgba(192,133,82,.45)"}}
+            onMouseLeave={e=>{e.currentTarget.style.background="#895737";e.currentTarget.style.boxShadow="0 8px 40px rgba(137,87,55,.4)"}}>
+            Reserve Your Stay
+          </button>
+          <a href="#rooms" className="font-jost" style={{fontSize:12,letterSpacing:".2em",textTransform:"uppercase",color:"rgba(243,233,220,.45)",textDecoration:"none",padding:"18px 20px",borderBottom:"1px solid rgba(192,133,82,.4)",transition:"color .3s"}}
+            onMouseEnter={e=>e.currentTarget.style.color="#F3E9DC"}
+            onMouseLeave={e=>e.currentTarget.style.color="rgba(243,233,220,.45)"}>
+            View Rooms ↓
+          </a>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div style={{position:"absolute",bottom:48,left:"50%",transform:"translateX(-50%)",display:"flex",flexDirection:"column",alignItems:"center",gap:10,opacity:introOut?1:0,animation:introOut?"rise .9s 1.4s both":"none"}}>
+        <div className="font-jost" style={{fontSize:9,letterSpacing:".5em",textTransform:"uppercase",color:"rgba(243,233,220,.25)"}}>Scroll</div>
+        <div className="leaf-float" style={{width:1,height:56,background:"linear-gradient(to bottom,#C08552,transparent)"}} />
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════ MARQUEE ═══════════════ */
+function MarqueeStrip() {
+  const items = ["Complete Privacy","❧","Bespoke Dining","❧","Estate Exclusivity","❧","Two Rooms Only","❧","Curated Arrivals","❧","Since 2019","❧"];
+  return (
+    <div style={{background:"#5E3023",padding:"18px 0",overflow:"hidden",borderTop:"1px solid rgba(192,133,82,.12)"}}>
+      <div className="marquee-track">
+        {[...Array(2)].flatMap((_,i)=>items.map((t,j)=>(
+          <span key={`${i}-${j}`} className="font-jost" style={{fontSize:10,letterSpacing:".4em",textTransform:"uppercase",color:t==="❧"?"#C08552":"rgba(243,233,220,.3)",flexShrink:0,fontWeight:300}}>{t}</span>
+        )))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════ PHILOSOPHY ═══════════════ */
+function Philosophy() {
+  const stats = [
+    {num:"02",label:"Private Rooms",      note:"Precisely two, always"},
+    {num:"∞", label:"Dedicated Attention",note:"Without measure"},
+    {num:"01",label:"Guest Party at a Time",note:"The estate is yours"},
+  ];
+
+  return (
+    <section id="philosophy" style={{padding:"clamp(80px,10vw,160px) clamp(24px,6vw,80px)",maxWidth:1400,margin:"0 auto"}}>
+      {/* Two columns */}
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))",gap:"clamp(48px,8vw,120px)",alignItems:"center"}}>
+        <Reveal>
+          <div style={{position:"relative"}}>
+            <svg style={{position:"absolute",top:-40,right:-20,opacity:.06,pointerEvents:"none"}} width="240" height="280" viewBox="0 0 240 280" fill="none">
+              <path d="M120 10 C120 10, 60 60, 40 120 C20 180, 50 240, 120 260 C190 240, 220 180, 200 120 C180 60, 120 10, 120 10Z" stroke="#5E3023" strokeWidth="2" fill="none"/>
+              <path d="M120 10 L120 260" stroke="#5E3023" strokeWidth="1"/>
+              <ellipse cx="120" cy="100" rx="40" ry="60" stroke="#5E3023" strokeWidth="1" fill="none" transform="rotate(-20,120,100)"/>
+              <ellipse cx="120" cy="160" rx="35" ry="55" stroke="#5E3023" strokeWidth="1" fill="none" transform="rotate(15,120,160)"/>
+            </svg>
+            <p className="font-jost" style={{fontSize:10,letterSpacing:".45em",textTransform:"uppercase",color:"#895737",marginBottom:24,fontWeight:400}}>Our Philosophy</p>
+            <h2 className="font-display" style={{fontSize:"clamp(40px,5vw,68px)",lineHeight:.95,marginBottom:48,color:"#5E3023"}}>
+              Rarity is<br/>the only <em style={{color:"#895737",fontStyle:"italic"}}>true<br/>luxury</em>
+            </h2>
+            <div style={{width:52,height:1.5,background:"#C08552",marginBottom:44,opacity:.8}}/>
+            <p className="font-jost" style={{fontSize:15,lineHeight:2,color:"rgba(94,48,35,.55)",fontWeight:300,marginBottom:28}}>
+              Maison Aurel was born from a single conviction: that true hospitality cannot be scaled. We offer two rooms — not as a constraint, but as a commitment.
+            </p>
+            <p className="font-jost" style={{fontSize:15,lineHeight:2,color:"rgba(94,48,35,.55)",fontWeight:300}}>
+              Each stay is attended to with the kind of unhurried attention that only extreme limitation allows. You will never share this place with a stranger.
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.18}>
+          <div style={{position:"relative",height:580}}>
+            <div style={{position:"absolute",top:0,left:40,right:0,bottom:80,overflow:"hidden"}}>
+              <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=900&q=90&auto=format&fit=crop" alt="Estate interior" className="phi-img" style={{width:"100%",height:"100%",objectFit:"cover",filter:"saturate(.9) brightness(.92)"}}/>
+            </div>
+            <div style={{position:"absolute",bottom:0,left:0,width:180,height:220,overflow:"hidden",border:"4px solid #F3E9DC",boxShadow:"0 20px 60px rgba(94,48,35,.2)"}}>
+              <img src="https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=400&q=90&auto=format&fit=crop" alt="Detail" style={{width:"100%",height:"100%",objectFit:"cover",filter:"saturate(.85)"}}/>
+            </div>
+            <div className="font-jost" style={{position:"absolute",bottom:24,right:0,background:"#5E3023",color:"#C08552",padding:"10px 20px",fontSize:10,letterSpacing:".35em",textTransform:"uppercase",fontWeight:300}}>
+              Florentine Atelier
+            </div>
+          </div>
+        </Reveal>
+      </div>
+
+      {/* Stats */}
+      <div style={{marginTop:120,display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:1,background:"rgba(137,87,55,.12)"}}>
+        {stats.map((s,i)=>(
+          <Reveal key={s.label} delay={i*.1}>
+            <div style={{background:"#F3E9DC",padding:"clamp(40px,5vw,72px) clamp(24px,4vw,48px)",textAlign:"center"}}>
+              <div className="font-display" style={{fontSize:"clamp(60px,8vw,96px)",color:"#895737",lineHeight:1,marginBottom:16,opacity:.2}}>{s.num}</div>
+              <p className="font-jost" style={{fontSize:10,letterSpacing:".3em",textTransform:"uppercase",color:"rgba(94,48,35,.4)",marginBottom:10,fontWeight:300}}>{s.label}</p>
+              <p className="font-baskerville" style={{fontSize:14,fontStyle:"italic",color:"rgba(94,48,35,.35)"}}>{s.note}</p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════ ROOMS ═══════════════ */
+function RoomsSection() {
+  return (
+    <section id="rooms" style={{background:"#5E3023",padding:"clamp(80px,10vw,160px) 0"}}>
+      <div style={{maxWidth:1400,margin:"0 auto",padding:"0 clamp(24px,6vw,80px)"}}>
+        <Reveal>
+          <div style={{textAlign:"center",marginBottom:"clamp(60px,8vw,100px)"}}>
+            <p className="font-jost" style={{fontSize:10,letterSpacing:".45em",textTransform:"uppercase",color:"#C08552",marginBottom:20,fontWeight:300}}>Accommodations</p>
+            <h2 className="font-display" style={{fontSize:"clamp(38px,6vw,72px)",color:"#F3E9DC"}}>The Two Rooms</h2>
+          </div>
+        </Reveal>
+
+        <div style={{display:"flex",flexDirection:"column",gap:2}}>
+          {ROOMS.map((room,i)=>{
+            const isEven = i%2===0;
+            return (
+              <Reveal key={room.id} delay={0.08}>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",minHeight:520}}>
+                  {/* Image */}
+                  <div style={{order:isEven?1:2,position:"relative",overflow:"hidden",minHeight:300}}>
+                    <img src={room.image} alt={room.name} className="room-img" style={{width:"100%",height:"100%",objectFit:"cover",filter:"brightness(.7) saturate(.9)"}}/>
+                    <div style={{position:"absolute",bottom:28,[isEven?"right":"left"]:28,fontFamily:"'DM Serif Display',serif",fontSize:"clamp(80px,14vw,160px)",color:"transparent",WebkitTextStroke:"1px rgba(243,233,220,.1)",lineHeight:1,pointerEvents:"none",userSelect:"none"}}>{room.id}</div>
+                  </div>
+
+                  {/* Content */}
+                  <div style={{order:isEven?2:1,padding:"clamp(40px,5vw,80px) clamp(24px,5vw,72px)",display:"flex",flexDirection:"column",justifyContent:"center",background:isEven?"#6B3829":"#622F22"}}>
+                    <p className="font-jost" style={{fontSize:10,letterSpacing:".4em",textTransform:"uppercase",color:room.accent,marginBottom:20,fontWeight:300}}>Suite {room.id} · {room.area}</p>
+                    <h3 className="font-display" style={{fontSize:"clamp(28px,3vw,44px)",color:"#F3E9DC",marginBottom:16,lineHeight:1.1}}>{room.name}</h3>
+                    <p className="font-baskerville" style={{fontSize:16,fontStyle:"italic",color:"rgba(243,233,220,.35)",marginBottom:36,lineHeight:1.6}}>{room.tagline}</p>
+                    <div style={{width:36,height:1.5,background:room.accent,opacity:.6,marginBottom:36}}/>
+                    <p className="font-jost" style={{fontSize:14,lineHeight:1.95,color:"rgba(243,233,220,.45)",fontWeight:300,marginBottom:44}}>{room.body}</p>
+
+                    <p className="font-jost" style={{fontSize:9,letterSpacing:".4em",textTransform:"uppercase",color:"rgba(243,233,220,.22)",marginBottom:20,fontWeight:300}}>Inclusions</p>
+                    {room.amenities.map(a=>(
+                      <div key={a} style={{display:"flex",alignItems:"center",gap:16,padding:"11px 0",borderBottom:"1px solid rgba(243,233,220,.06)"}}>
+                        <span style={{width:4,height:4,background:room.accent,borderRadius:"50%",flexShrink:0,opacity:.7}}/>
+                        <span className="font-jost" style={{fontSize:13,color:"rgba(243,233,220,.38)",fontWeight:300}}>{a}</span>
+                      </div>
+                    ))}
+
+                    <button className="font-jost" style={{marginTop:44,alignSelf:"flex-start",fontWeight:400,fontSize:11,letterSpacing:".28em",textTransform:"uppercase",padding:"14px 36px",border:`1.5px solid ${room.accent}`,color:room.accent,background:"transparent",cursor:"pointer",transition:"all .3s"}}
+                      onMouseEnter={e=>{e.currentTarget.style.background=room.accent;e.currentTarget.style.color="#5E3023"}}
+                      onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.color=room.accent}}>
+                      Enquire About This Suite
+                    </button>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════ EXPERIENCE ═══════════════ */
+function Experience() {
+  const features = [
+    {icon:"❧",label:"Complete Privacy",  desc:"No shared spaces. No strangers. Ever.",        note:"At all times"},
+    {icon:"✦",label:"Curated Arrivals",  desc:"A personal welcome — no check-in desk.",        note:"Personalised"},
+    {icon:"◉",label:"Bespoke Dining",    desc:"Private chef arranged upon request.",           note:"On arrangement"},
+    {icon:"◇",label:"Exclusive Buyout",  desc:"The entire estate may be reserved privately.",  note:"On request"},
+  ];
+
+  return (
+    <section id="experience" style={{padding:"clamp(80px,10vw,160px) clamp(24px,6vw,80px)"}}>
+      <div style={{maxWidth:1200,margin:"0 auto"}}>
+        <Reveal>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:"clamp(48px,6vw,80px)",flexWrap:"wrap",gap:32}}>
+            <div>
+              <p className="font-jost" style={{fontSize:10,letterSpacing:".45em",textTransform:"uppercase",color:"#895737",marginBottom:20,fontWeight:300}}>The Experience</p>
+              <h2 className="font-display" style={{fontSize:"clamp(36px,5vw,64px)",lineHeight:1,color:"#5E3023"}}>
+                Every detail,<br/><em style={{color:"#895737"}}>considered</em>
+              </h2>
+            </div>
+            <p className="font-jost" style={{fontSize:15,color:"rgba(94,48,35,.4)",maxWidth:320,lineHeight:1.9,fontWeight:300}}>
+              Nothing at Maison Aurel is accidental. From your arrival to your last morning, every element has been thought through.
+            </p>
+          </div>
+        </Reveal>
+
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",gap:16}}>
+          {features.map((item,i)=>(
+            <Reveal key={item.label} delay={i*.1}>
+              <div className="feature-card" style={{background:"#F3E9DC",padding:"clamp(36px,4vw,52px) 32px",height:"100%",cursor:"default"}}>
+                <div className="font-display" style={{fontSize:28,color:"#895737",marginBottom:28}}>{item.icon}</div>
+                <p className="font-display" style={{fontSize:22,color:"#5E3023",marginBottom:14,lineHeight:1.2}}>{item.label}</p>
+                <p className="font-jost" style={{fontSize:13,color:"rgba(94,48,35,.45)",lineHeight:1.8,fontWeight:300,marginBottom:28}}>{item.desc}</p>
+                <span className="font-jost" style={{fontSize:9,letterSpacing:".35em",textTransform:"uppercase",color:"#C08552",fontWeight:400}}>{item.note}</span>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════ QUOTE ═══════════════ */
+function Quote() {
+  const scrollY = useScrollY();
+  return (
+    <div style={{position:"relative",height:"72vh",overflow:"hidden"}}>
+      <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=2400&q=90&auto=format&fit=crop" alt="Nature"
+        style={{position:"absolute",inset:0,width:"100%",height:"130%",objectFit:"cover",transform:`translateY(${(scrollY-2800)*.1}px)`,filter:"brightness(.4) saturate(.7) hue-rotate(-10deg)"}}/>
+      <div style={{position:"absolute",inset:0,background:"linear-gradient(135deg,rgba(94,48,35,.6) 0%,rgba(94,48,35,.2) 100%)"}}/>
+      <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",padding:"0 32px"}}>
+        <Reveal>
+          <p className="font-jost" style={{fontSize:10,letterSpacing:".5em",textTransform:"uppercase",color:"#C08552",marginBottom:36,fontWeight:300}}>Provence, France</p>
+          <h2 className="font-display" style={{fontSize:"clamp(26px,5vw,62px)",color:"#F3E9DC",lineHeight:1.25,maxWidth:820,fontStyle:"italic"}}>
+            "We built a place not to be visited —<br/>but to be inhabited."
+          </h2>
+          <div style={{width:40,height:1,background:"#C08552",margin:"32px auto 24px",opacity:.6}}/>
+          <p className="font-jost" style={{fontSize:11,letterSpacing:".3em",color:"rgba(243,233,220,.35)",fontWeight:300}}>— The Founders, Maison Aurel</p>
+        </Reveal>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════ FAQ ═══════════════ */
+function FAQ() {
+  const [open, setOpen] = useState(null);
+  const faqs = [
+    {q:"How many rooms does the property have?",        a:"We offer precisely two accommodations. This is a deliberate choice — not a limitation."},
+    {q:"Is exclusive buyout possible?",                 a:"The entire estate may be reserved exclusively. Contact our residence team for private arrangements."},
+    {q:"What is the minimum stay?",                     a:"We welcome guests for a minimum of two evenings, allowing time to truly inhabit the space."},
+    {q:"Do you accommodate special occasions?",         a:"Intimate ceremonies, private dinners, and curated experiences are arranged with discretion."},
+    {q:"What is included in the room rate?",            a:"Arrival welcome, daily breakfast prepared in-suite, estate access, and a personal host throughout your stay."},
+  ];
+
+  return (
+    <section style={{padding:"clamp(80px,10vw,160px) clamp(24px,6vw,80px)",background:"#F3E9DC"}}>
+      <div style={{maxWidth:720,margin:"0 auto"}}>
+        <Reveal>
+          <div style={{textAlign:"center",marginBottom:"clamp(48px,6vw,80px)"}}>
+            <p className="font-jost" style={{fontSize:10,letterSpacing:".45em",textTransform:"uppercase",color:"#895737",marginBottom:20,fontWeight:300}}>Questions</p>
+            <h2 className="font-display" style={{fontSize:"clamp(30px,4vw,52px)",color:"#5E3023"}}>Frequently Asked</h2>
+          </div>
+        </Reveal>
+        {faqs.map((faq,i)=>(
+          <Reveal key={i} delay={i*.05}>
+            <div style={{borderBottom:"1px solid rgba(137,87,55,.15)"}}>
+              <button onClick={()=>setOpen(open===i?null:i)} style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"28px 0",background:"none",border:"none",color:"#5E3023",cursor:"pointer"}}>
+                <span className="font-display" style={{fontSize:19,textAlign:"left"}}>{faq.q}</span>
+                <span style={{color:"#895737",fontSize:24,transform:open===i?"rotate(45deg)":"none",transition:"transform .3s",flexShrink:0,marginLeft:20,lineHeight:1}}>+</span>
+              </button>
+              <div style={{maxHeight:open===i?160:0,overflow:"hidden",transition:"max-height .45s ease"}}>
+                <p className="font-jost" style={{paddingBottom:28,fontSize:14,lineHeight:1.95,color:"rgba(94,48,35,.5)",fontWeight:300}}>{faq.a}</p>
+              </div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════ FOOTER ═══════════════ */
+function Footer() {
+  const navCols = [
+    {title:"Navigate",links:["Rooms","Philosophy","Experience","Reserve"]},
+    {title:"Estate",  links:["Privacy Policy","Terms","Press","Careers"]},
+  ];
+
+  return (
+    <footer style={{background:"#5E3023",padding:"clamp(80px,10vw,120px) clamp(24px,6vw,80px) 64px",borderTop:"1px solid rgba(192,133,82,.1)"}}>
+      <Reveal>
+        <div style={{textAlign:"center",marginBottom:"clamp(80px,10vw,120px)"}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:20,marginBottom:52}}>
+            <div style={{height:1,width:80,background:"rgba(192,133,82,.2)"}}/>
+            <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+              <path d="M32 4 C32 4, 12 18, 12 36 C12 48, 21 58, 32 58 C43 58, 52 48, 52 36 C52 18, 32 4, 32 4Z" stroke="#C08552" strokeWidth="1.5" fill="rgba(192,133,82,.1)"/>
+              <path d="M32 10 L32 54" stroke="rgba(192,133,82,.4)" strokeWidth="1"/>
+              <circle cx="32" cy="36" r="3" fill="#C08552"/>
+            </svg>
+            <div style={{height:1,width:80,background:"rgba(192,133,82,.2)"}}/>
+          </div>
+          <h2 className="font-display" style={{fontSize:"clamp(32px,6vw,72px)",color:"#F3E9DC",marginBottom:44,lineHeight:1.05}}>
+            Begin your<br/><em style={{color:"#C08552"}}>reservation</em>
+          </h2>
+          <button className="font-jost" style={{fontWeight:400,fontSize:12,letterSpacing:".25em",textTransform:"uppercase",padding:"18px 52px",background:"#895737",color:"#F3E9DC",border:"none",cursor:"pointer",transition:"background .3s",boxShadow:"0 8px 48px rgba(137,87,55,.35)"}}
+            onMouseEnter={e=>e.currentTarget.style.background="#C08552"}
+            onMouseLeave={e=>e.currentTarget.style.background="#895737"}>
+            Contact the Estate
+          </button>
+        </div>
+      </Reveal>
+
+      <div style={{height:1,background:"rgba(192,133,82,.1)",marginBottom:64}}/>
+
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:48,marginBottom:64}}>
+        {/* Brand */}
+        <div>
+          <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}>
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none">
+              <path d="M32 4 C32 4, 12 18, 12 36 C12 48, 21 58, 32 58 C43 58, 52 48, 52 36 C52 18, 32 4, 32 4Z" stroke="#C08552" strokeWidth="1.5" fill="none"/>
+              <circle cx="32" cy="36" r="3" fill="#C08552"/>
+            </svg>
+            <span className="font-display" style={{fontSize:22,color:"#F3E9DC",letterSpacing:".04em"}}>Maison Aurel</span>
+          </div>
+          <p className="font-jost" style={{fontSize:13,color:"rgba(243,233,220,.3)",lineHeight:1.9,fontWeight:300,maxWidth:260}}>
+            A private estate of two rooms in the heart of Provence. For those who understand that true luxury begins with stillness.
+          </p>
+        </div>
+
+        {navCols.map(col=>(
+          <div key={col.title}>
+            <p className="font-jost" style={{fontSize:9,letterSpacing:".4em",textTransform:"uppercase",color:"#C08552",marginBottom:28,fontWeight:400}}>{col.title}</p>
+            {col.links.map(l=>(
+              <a key={l} href="#" className="font-jost" style={{display:"block",fontSize:13,color:"rgba(243,233,220,.35)",textDecoration:"none",marginBottom:14,fontWeight:300,transition:"color .3s"}}
+                onMouseEnter={e=>e.target.style.color="#F3E9DC"} onMouseLeave={e=>e.target.style.color="rgba(243,233,220,.35)"}>{l}</a>
+            ))}
+          </div>
+        ))}
+
+        <div>
+          <p className="font-jost" style={{fontSize:9,letterSpacing:".4em",textTransform:"uppercase",color:"#C08552",marginBottom:28,fontWeight:400}}>Contact</p>
+          <address className="font-jost" style={{fontStyle:"normal",fontSize:13,color:"rgba(243,233,220,.35)",lineHeight:2.1,fontWeight:300}}>
+            12 Rue de l'Atelier<br/>
+            Provence, France<br/><br/>
+            residence@maisonaurel.com<br/>
+            +33 (0)4 90 00 00 00
+          </address>
+        </div>
+      </div>
+
+      <div style={{borderTop:"1px solid rgba(192,133,82,.08)",paddingTop:36,display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:16}}>
+        <p className="font-jost" style={{fontSize:10,letterSpacing:".25em",color:"rgba(243,233,220,.2)",fontWeight:300}}>
+          © {new Date().getFullYear()} Maison Aurel · All Rights Reserved
+        </p>
+        <div style={{display:"flex",gap:32}}>
+          {["Instagram","Pinterest","Telegram"].map(s=>(
+            <a key={s} href="#" className="font-jost" style={{fontSize:10,letterSpacing:".2em",color:"rgba(243,233,220,.22)",textDecoration:"none",fontWeight:300,transition:"color .3s"}}
+              onMouseEnter={e=>e.target.style.color="#C08552"} onMouseLeave={e=>e.target.style.color="rgba(243,233,220,.22)"}>{s}</a>
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ═══════════════ INTRO LOADER ═══════════════ */
+function IntroLoader({ loaded, out }) {
+  return (
+    <div className={`intro-overlay${out?" out":""}`}>
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" style={{marginBottom:28,opacity:loaded?1:0,transition:"opacity .8s"}}>
+        <path d="M32 4 C32 4, 12 18, 12 36 C12 48, 21 58, 32 58 C43 58, 52 48, 52 36 C52 18, 32 4, 32 4Z" stroke="#C08552" strokeWidth="1" fill="none"/>
+        <path d="M32 12 C32 12, 22 24, 22 36 C22 44, 26.5 52, 32 52" stroke="#895737" strokeWidth=".8" fill="none"/>
+        <path d="M32 12 L32 52" stroke="rgba(192,133,82,.4)" strokeWidth=".6"/>
+        <circle cx="32" cy="36" r="3" fill="#C08552"/>
+      </svg>
+      <div className="font-display" style={{fontSize:"clamp(28px,5vw,46px)",color:"#F3E9DC",letterSpacing:".06em",marginBottom:20,opacity:loaded?1:0,transition:"opacity .8s .2s",animation:loaded?"rise .9s .2s cubic-bezier(.16,1,.3,1) both":"none"}}>
+        Maison Aurel
+      </div>
+      <div style={{width:220,height:1,background:"rgba(192,133,82,.2)",position:"relative",overflow:"hidden"}}>
+        <div className="loader-bar" style={{position:"absolute",top:0,left:0,height:"100%",background:"#C08552",animation:loaded?undefined:"none"}}/>
+      </div>
+      <div className="font-jost" style={{marginTop:16,fontSize:10,letterSpacing:".35em",textTransform:"uppercase",color:"rgba(243,233,220,.3)"}}>Provence, France</div>
+    </div>
+  );
+}
+
+/* ═══════════════ LANDING PAGE ═══════════════ */
+function LandingPage() {
+  const scrollY = useScrollY();
+  const [introOut, setIntroOut] = useState(false);
+  const [loaded,   setLoaded]   = useState(false);
+
+  useEffect(()=>{
+    const t1 = setTimeout(()=>setLoaded(true), 200);
+    const t2 = setTimeout(()=>setIntroOut(true), 2400);
+    return ()=>{ clearTimeout(t1); clearTimeout(t2); };
+  },[]);
+
+  const progress = typeof document !== "undefined"
+    ? Math.min((scrollY / Math.max(document.body.scrollHeight - window.innerHeight, 1)) * 100, 100)
+    : 0;
+
+  return (
+    <div style={{background:"#F3E9DC",color:"#5E3023",fontFamily:"'DM Serif Display',Georgia,serif",overflowX:"hidden"}}>
+      <div className="scroll-progress" style={{width:`${progress}%`}}/>
+      <IntroLoader loaded={loaded} out={introOut}/>
+      <Navbar/>
+      <Hero introOut={introOut}/>
+      <MarqueeStrip/>
+      <Philosophy/>
+      <RoomsSection/>
+      <Experience/>
+      <Quote/>
+      <FAQ/>
+      <Footer/>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<LandingPage/>);
+</script>
+</body>
+</html>
