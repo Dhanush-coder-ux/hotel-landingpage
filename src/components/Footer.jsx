@@ -22,33 +22,14 @@ function LeafLogo() {
   );
 }
 
-function BotanicalDivider() {
-  return (
-    <div className="flex items-center justify-center gap-5 mb-12">
-      <div className="h-px w-20 bg-[#C08552]/20" />
-      <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
-        <path
-          d="M32 4 C32 4, 12 18, 12 36 C12 48, 21 58, 32 58 C43 58, 52 48, 52 36 C52 18, 32 4, 32 4Z"
-          stroke="#C08552"
-          strokeWidth="1.5"
-          fill="rgba(192,133,82,0.1)"
-        />
-        <path d="M32 10 L32 54" stroke="rgba(192,133,82,0.4)" strokeWidth="1" />
-        <circle cx="32" cy="36" r="3" fill="#C08552" />
-      </svg>
-      <div className="h-px w-20 bg-[#C08552]/20" />
-    </div>
-  );
-}
 
 export default function Footer() {
   return (
-    <footer className="bg-[#5E3023] pt-24 lg:pt-32 pb-16 px-6 md:px-14 xl:px-20 border-t border-[#C08552]/10">
+    <footer id="contact" className="bg-[#5E3023] pt-24 lg:pt-32 pb-16 px-6 md:px-14 xl:px-20 border-t border-[#C08552]/10">
 
       {/* CTA block */}
       <Reveal>
         <div className="text-center mb-24 lg:mb-32">
-          <BotanicalDivider />
           <h2 className="font-display text-[clamp(32px,6vw,72px)] text-[#F3E9DC] mb-11 leading-[1.05]">
             Begin your<br />
             <em className="text-[#C08552]">reservation</em>
@@ -71,10 +52,7 @@ export default function Footer() {
         {/* Brand column */}
         <div>
           <div className="flex items-center gap-3 mb-6">
-            <LeafLogo />
-            <span className="font-display text-[22px] text-[#F3E9DC] tracking-[0.04em]">
-              Maison Aurel
-            </span>
+          <img src="/images/A1_logo_coffee.png" className="h-20" alt="" />
           </div>
           <p className="font-jost text-[13px] text-[#F3E9DC]/30 leading-[1.9] font-light max-w-[260px]">
             A private estate of two rooms in the heart of Provence. For those who understand

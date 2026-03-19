@@ -53,7 +53,8 @@ export default function Philosophy() {
             {/* Main image */}
             <div className="absolute top-0 left-10 right-0 bottom-20 overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=900&q=90&auto=format&fit=crop"
+              src="/images/image1.jpeg"
+                // src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=900&q=90&auto=format&fit=crop"
                 alt="Estate interior"
                 className="phi-img w-full h-full object-cover"
                 style={{ filter: "saturate(0.9) brightness(0.92)" }}

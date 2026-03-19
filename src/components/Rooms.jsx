@@ -18,7 +18,7 @@ const ROOMS = [
     ],
     accent: "#C08552",
     image:
-      "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1600&q=95&auto=format&fit=crop",
+      "/images/image3.jpeg",
   },
   {
     id: "II",
@@ -36,7 +36,7 @@ const ROOMS = [
     ],
     accent: "#895737",
     image:
-      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=1600&q=95&auto=format&fit=crop",
+"/images/image2.jpeg",
   },
 ];
 

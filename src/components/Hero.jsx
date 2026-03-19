@@ -101,10 +101,11 @@ export default function Hero({ introOut }) {
             opacity: introOut ? 1 : 0,
             animation: introOut ? "rise 0.9s 1.05s both" : "none",
           }}
+          
         >
-          <button className="font-jost font-normal text-[12px] tracking-[0.22em] uppercase px-12 py-[18px] bg-[#895737] text-[#F3E9DC] border-none cursor-pointer transition-all duration-[350ms] shadow-[0_8px_40px_rgba(137,87,55,0.4)] hover:bg-[#C08552] hover:shadow-[0_12px_56px_rgba(192,133,82,0.45)]">
+          <a  href="#contact" className="font-jost font-normal text-[12px] tracking-[0.22em] uppercase px-12 py-[18px] bg-[#895737] text-[#F3E9DC] border-none cursor-pointer transition-all duration-[350ms] shadow-[0_8px_40px_rgba(137,87,55,0.4)] hover:bg-[#C08552] hover:shadow-[0_12px_56px_rgba(192,133,82,0.45)]">
             Reserve Your Stay
-          </button>
+          </a>
           <a
             href="#rooms"
             className="font-jost text-[12px] tracking-[0.2em] uppercase text-[#F3E9DC]/45 no-underline px-5 py-[18px] border-b border-[#C08552]/40 transition-colors duration-300 hover:text-[#F3E9DC]"
