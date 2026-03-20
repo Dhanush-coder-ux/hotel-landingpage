@@ -5,8 +5,8 @@ const ROOMS = [
     id: "I",
     name: "The Champagne Suite",
     area: "85 m²",
-    tagline: "A private sanctuary of champagne hues and sculpted light.",
-    body: "Bathed in soft gold and morning quiet, the Champagne Suite unfolds across 85 square metres of curated restraint. Hand-laid stone floors meet bespoke furnishings commissioned from a single Florentine atelier.",
+    tagline: "A refined sanctuary of warm tones, natural light, and quiet elegance.",
+    body: "The Champagne Suite is designed as a private luxury retreat in Madurai, where soft tones and natural textures create a calm, welcoming atmosphere. Spanning 85 square metres, the space blends handcrafted materials with modern comfort, offering a stay that feels both refined and deeply relaxing. Ideal for guests seeking privacy and quiet, this suite provides a seamless balance between comfort, design, and personal space. Near Madurai Perungudi Airport",
     amenities: [
       "King Ciel · Cashmere Linens",
       "Hammered Brass Soaking Tub",
@@ -22,8 +22,8 @@ const ROOMS = [
     id: "II",
     name: "The Charcoal Residence",
     area: "110 m²",
-    tagline: "Where architecture becomes solitude.",
-    body: "Conceived as a study in deliberate darkness — deep tones that absorb, soothe, and hold. Raw concrete walls meet silk drapery in a dialogue between weight and weightlessness.",
+    tagline: "A bold, architectural space designed for stillness and deep rest.",
+    body: "The Charcoal Residence offers a more immersive and introspective stay experience, where deep textures and minimal design create a sense of complete calm. Spread across 110 square metres, it is designed for those who appreciate space, privacy, and thoughtful detail. Every element is curated to reduce noise, enhance comfort, and allow you to fully unwind in a private setting near Madurai Perungudi Airport.",
     amenities: [
       "Emperor Obsidian Headboard Bed",
       "Steam Room · Single Stone",
@@ -39,119 +39,135 @@ const ROOMS = [
 
 export default function Rooms() {
   return (
-    <section id="rooms" className="bg-[#5E3023] py-28 lg:py-40">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-14 xl:px-20">
+    <section id="rooms" className="relative bg-[#5E3023] py-28 lg:py-20 overflow-hidden">
+
+      {/* background glow */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#5E3023] via-[#5E3023] to-[#3d1f18] opacity-80" />
+
+      <div className="relative max-w-[1400px] mx-auto px-6 md:px-14 xl:px-20">
 
         {/* Heading */}
         <Reveal>
           <div className="text-center mb-20 lg:mb-28">
             <p className="font-jost text-[12px] tracking-[0.4em] uppercase text-[#C08552] mb-5 font-medium">
-              Accommodations
+              Private Suites
             </p>
-            <h2 className="font-display text-[clamp(38px,6vw,72px)] text-[#F3E9DC]">
-              The Two Rooms
+            <h2 className="font-display text-[clamp(40px,6vw,80px)] text-[#F3E9DC]">
+              Two Exclusive Suites
             </h2>
+            <p className="text-white/40 text-[14px]">Only two private suites in Madurai, designed for complete privacy, comfort, and a truly personal stay experience.</p>
           </div>
         </Reveal>
 
-        {/* Room cards */}
-        <div className="flex flex-col gap-0.5">
+        {/* Rooms */}
+        <div className="flex flex-col gap-16">
           {ROOMS.map((room, i) => {
             const isEven = i % 2 === 0;
+
             return (
-              <Reveal key={room.id} delay={0.08}>
-                <div
-                  className={`grid grid-cols-1 md:grid-cols-2 min-h-[520px] lg:min-h-[620px]`}
-                >
+              <Reveal key={room.id} delay={0.1}>
+                <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10">
+
                   {/* Image */}
                   <div
-                    className={`relative overflow-hidden ${isEven ? "md:order-1" : "md:order-2"}`}
+                    className={`relative group overflow-hidden rounded-2xl ${
+                      isEven ? "md:order-1" : "md:order-2"
+                    }`}
                   >
                     <img
                       src={room.image}
                       alt={room.name}
-                      className="room-img w-full h-full object-cover min-h-[300px] md:min-h-0"
-                      style={{ filter: "brightness(0.7) saturate(0.9)" }}
+                      className="w-full h-[420px] md:h-[560px] object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    {/* Oversized room numeral watermark */}
-                    <div
-                      className="absolute bottom-7 pointer-events-none select-none font-display leading-none"
-                      style={{
-                        [isEven ? "right" : "left"]: 28,
-                        fontSize: "clamp(80px,14vw,160px)",
-                        color: "transparent",
-                        WebkitTextStroke: "1px rgba(243,233,220,0.15)",
-                      }}
-                    >
+
+                    {/* overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+
+                    {/* number */}
+                    <div className="absolute bottom-6 right-6 font-display text-[clamp(80px,10vw,140px)] text-white/10">
                       {room.id}
                     </div>
                   </div>
 
                   {/* Content */}
                   <div
-                    className={`flex flex-col justify-center px-10 lg:px-[72px] py-16 lg:py-20 ${
-                      isEven ? "bg-[#6B3829]" : "bg-[#622F22]"
-                    }`}
+                    className={`relative p-8 lg:p-12 rounded-2xl backdrop-blur-xl border border-white/10
+                    ${isEven ? "md:order-2" : "md:order-1"}
+                    bg-white/5`}
                   >
+
+                    {/* accent line */}
+                    <div
+                      className="w-12 h-[2px] mb-6"
+                      style={{ background: room.accent }}
+                    />
+
                     <p
-                      className="font-jost text-[12px] tracking-[0.35em] uppercase mb-5 font-medium"
+                      className="font-jost text-[14px] tracking-[0.35em] uppercase mb-4 font-bold"
                       style={{ color: room.accent }}
                     >
                       Suite {room.id} · {room.area}
                     </p>
-                    <h3 className="font-display text-[clamp(28px,3vw,44px)] text-[#F3E9DC] mb-4 leading-[1.1]">
+
+                    <h3 className="font-display text-[clamp(28px,3vw,44px)] text-[#F3E9DC] mb-4">
                       {room.name}
                     </h3>
-                    <p
-                      className="font-baskerville text-[18px] italic mb-9 leading-[1.6] text-[#F3E9DC]/80"
-                    >
+
+                    <p className="font-baskerville italic text-[#F3E9DC]/80 mb-6">
                       {room.tagline}
                     </p>
-                    <div
-                      className="w-9 h-[1.5px] mb-9 opacity-80"
-                      style={{ background: room.accent }}
-                    />
-                    <p className="font-jost text-[16px] leading-[1.8] text-[#F3E9DC]/90 mb-11">
+
+                    <p className="font-jost text-[#F3E9DC]/90 leading-[1.8] mb-8">
                       {room.body}
                     </p>
 
                     {/* Amenities */}
-                    <p className="font-jost text-[11px] tracking-[0.35em] uppercase text-[#F3E9DC]/70 mb-5 font-medium">
-                      Inclusions
-                    </p>
-                    {room.amenities.map((amenity) => (
-                      <div
-                        key={amenity}
-                        className="flex items-center gap-4 py-[11px] border-b border-[#F3E9DC]/10"
-                      >
-                        <span
-                          className="w-1.5 h-1.5 rounded-full flex-shrink-0 opacity-90"
-                          style={{ background: room.accent }}
-                        />
-                        <span className="font-jost text-[15px] text-[#F3E9DC]/90">
-                          {amenity}
-                        </span>
-                      </div>
-                    ))}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
+                      {room.amenities.map((item) => (
+                        <div
+                          key={item}
+                          className="flex items-center gap-3 text-sm text-[#F3E9DC]/85"
+                        >
+                          <span
+                            className="w-1.5 h-1.5 rounded-full"
+                            style={{ background: room.accent }}
+                          />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
 
-                    {/* CTA */}
+                    {/* CTA (Shine Button 🔥) */}
                     <button
-                      className="mt-11 self-start font-jost font-medium text-[12px] tracking-[0.25em] uppercase px-9 py-[14px] bg-transparent cursor-pointer transition-all duration-300"
+                      className="group/btn relative overflow-hidden inline-flex items-center gap-2
+                      font-jost text-[12px] tracking-[0.25em] uppercase px-8 py-3.5 rounded-xl
+                      transition-all duration-300"
                       style={{
-                        border: `1.5px solid ${room.accent}`,
+                        border: `1px solid ${room.accent}`,
                         color: room.accent,
                       }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = room.accent;
-                        e.currentTarget.style.color = "#5E3023";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "transparent";
-                        e.currentTarget.style.color = room.accent;
-                      }}
                     >
-                      Enquire About This Suite
+                      <a href="tel:9677760535">
+                        <span className="relative z-10">
+                          Check Availability
+                        </span>
+                      </a>
+
+                      {/* shine */}
+                      <span className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+
+                      {/* hover bg */}
+                      <span
+                        className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition"
+                        
+                      />
+
+                      {/* text invert */}
+                      <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/btn:opacity-100 text-[#5E3023]">
+                        Check Availability
+                      </span>
                     </button>
+
                   </div>
                 </div>
               </Reveal>

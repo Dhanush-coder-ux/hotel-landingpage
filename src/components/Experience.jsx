@@ -1,76 +1,126 @@
-import { Reveal } from "../hooks/useReveal"
+import { Reveal } from "../hooks/useReveal";
 
 const FEATURES = [
   {
     icon: "❧",
     label: "Complete Privacy",
-    desc: "No shared spaces. No strangers. Ever.",
-    note: "At all times",
+    desc: "Only two suites. No shared spaces. No interruptions — just a truly private stay in Madurai.",
+    note: "Always private",
   },
   {
     icon: "✦",
-    label: "Curated Arrivals",
-    desc: "A personal welcome — no check-in desk.",
-    note: "Personalised",
+    label: "Personalised Arrival",
+    desc: "A seamless, quiet welcome without queues or formal check-ins — designed entirely around your time.",
+    note: "Tailored to you",
   },
   {
     icon: "◉",
-    label: "Bespoke Dining",
-    desc: "Private chef arranged upon request.",
-    note: "On arrangement",
+    label: "In-Suite Dining",
+    desc: "Enjoy curated meals in the comfort of your private space, with chef arrangements available on request.",
+    note: "On request",
   },
   {
     icon: "◇",
-    label: "Exclusive Buyout",
-    desc: "The entire estate may be reserved privately.",
-    note: "On request",
+    label: "Exclusive Stay",
+    desc: "Reserve the entire property for a completely private boutique experience in Perungudi, Madurai.",
+    note: "Full buyout available",
   },
 ];
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-28 lg:py-40 px-6 md:px-14 xl:px-20">
-      <div className="max-w-[1200px] mx-auto">
+    <section className="relative py-28 lg:py-40 px-6 md:px-14 xl:px-20 bg-[#F3E9DC] overflow-hidden">
 
-        {/* Header row */}
+      {/* subtle background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#F3E9DC] via-[#f0e3d6] to-[#e7d4c3] opacity-70" />
+
+      <div className="relative max-w-[1200px] mx-auto">
+
+        {/* Header */}
         <Reveal>
           <div className="flex justify-between items-end mb-16 lg:mb-20 flex-wrap gap-8">
+
             <div>
               <p className="font-jost text-[12px] tracking-[0.4em] uppercase text-[#895737] mb-5 font-medium">
-                The Experience
+                Guest Experience
               </p>
-              <h2 className="font-display text-[clamp(36px,5vw,64px)] leading-none text-[#5E3023]">
-                Every detail,<br />
-                <em className="text-[#895737]">considered</em>
+
+              <h2 className="font-display text-[clamp(38px,5vw,68px)] leading-[1.05] text-[#5E3023]">
+                A stay designed,
+                <br />
+                <span className="relative inline-block">
+                  <em className="text-[#895737]">around you</em>
+                  <span className="absolute left-0 bottom-1 w-full h-[6px] bg-[#C08552]/30 -z-10" />
+                </span>
               </h2>
             </div>
-            <p className="font-jost text-[16px] text-[#5E3023]/80 max-w-xs leading-[1.8]">
-              Nothing at A1 is accidental. From your arrival to your last morning,
-              every element has been thought through.
+
+            <p className="font-jost text-[16px] text-[#5E3023]/80 max-w-xs leading-[1.9]">
+              Every element of your stay is thoughtfully curated — from your arrival to your final morning. Designed for privacy, comfort, and ease, this is a boutique stay experience in Madurai Perungudi where nothing feels rushed or impersonal.
             </p>
+
           </div>
         </Reveal>
 
-        {/* Feature cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
           {FEATURES.map((item, i) => (
             <Reveal key={item.label} delay={i * 0.1}>
-              <div className="feature-card bg-[#F3E9DC] px-8 py-12 lg:py-[52px] h-full cursor-default hover:bg-[#ebdccc] transition-colors duration-300">
-                <div className="font-display text-[28px] text-[#895737] mb-7">
-                  {item.icon}
-                </div>
-                <p className="font-display text-[22px] text-[#5E3023] mb-3.5 leading-[1.2] font-medium">
-                  {item.label}
-                </p>
-                <p className="font-jost text-[15px] text-[#5E3023]/80 leading-[1.7] mb-7">
-                  {item.desc}
-                </p>
-                <span className="font-jost text-[11px] tracking-[0.3em] uppercase text-[#895737] font-medium">
-                  {item.note}
-                </span>
-              </div>
+              <div
+  className="group relative h-full p-8 rounded-2xl overflow-hidden
+  backdrop-blur-2xl bg-white/10 border border-white/20
+  shadow-[0_10px_40px_rgba(94,48,35,0.15)]
+  transition-all duration-500
+  hover:-translate-y-2 hover:shadow-[0_25px_80px_rgba(94,48,35,0.25)]"
+>
+
+  {/* glass highlight layer */}
+  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/25 via-white/5 to-transparent opacity-60" />
+
+  {/* edge light (top glow) */}
+  <div className="absolute inset-0 rounded-2xl border border-white/30 pointer-events-none" />
+
+  {/* hover glow */}
+  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500
+    bg-gradient-to-br from-[#C08552]/25 via-transparent to-transparent rounded-2xl" />
+
+  {/* shine sweep */}
+  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000
+    bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+
+  {/* content */}
+  <div className="relative z-10">
+
+    {/* icon */}
+    <div className="font-display text-[30px] text-[#895737] mb-6
+      transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+      {item.icon}
+    </div>
+
+    {/* title */}
+    <p className="font-display text-[22px] text-[#5E3023] mb-3 leading-[1.3] font-medium">
+      {item.label}
+    </p>
+
+    {/* desc */}
+    <p className="font-jost text-[15px] text-[#5E3023]/80 leading-[1.8] mb-6">
+      {item.desc}
+    </p>
+
+    {/* divider */}
+    <div className="w-8 h-[1.5px] bg-[#C08552] mb-4 opacity-70" />
+
+    {/* note */}
+    <span className="font-jost text-[11px] tracking-[0.3em] uppercase text-[#895737] font-medium">
+      {item.note}
+    </span>
+
+  </div>
+</div>
             </Reveal>
           ))}
+
         </div>
       </div>
     </section>

@@ -15,9 +15,9 @@ function CornerFlourish({ style = {} }) {
 
 // Updated words to focus on nature and grounding
 const HERO_WORDS = [
-  { text: "Return",  italic: false, delay: "0.35s", color: "#F3E9DC" },
-  { text: "to the",  italic: true,  delay: "0.50s", color: "#C08552" },
-  { text: "Earth",   italic: false, delay: "0.65s", color: "#F3E9DC" },
+  { text: "Luxury Stay", italic: false, delay: "0.35s", color: "#F3E9DC" },
+  { text: "in", italic: true, delay: "0.50s", color: "#C08552" },
+  { text: "Madurai", italic: false, delay: "0.65s", color: "#F3E9DC" },
 ];
 
 export default function Hero({ introOut }) {
@@ -53,13 +53,13 @@ export default function Hero({ introOut }) {
         {/* Eyebrow - Updated copy for a grounded feel */}
         <div className="overflow-hidden mb-9">
           <div
-            className="font-jost text-[12px] tracking-[0.4em] uppercase text-[#C08552] font-medium"
+            className="font-jost text-[14px] tracking-[0.4em] uppercase text-[#e4be9d] font-medium"
             style={{
               opacity: introOut ? 1 : 0,
               animation: introOut ? "rise 0.9s 0.1s both" : "none",
             }}
           >
-            Madurai &nbsp;·&nbsp; Est &nbsp;·&nbsp; Perungudi
+            Luxury Boutique Stay &nbsp;·&nbsp; Madurai &nbsp;·&nbsp; Perungudi
           </div>
         </div>
 
@@ -91,28 +91,37 @@ export default function Hero({ introOut }) {
               animation: introOut ? "rise 0.9s 0.85s both" : "none",
             }}
           >
-            Find stillness in the heart of the countryside
+            Located just minutes from Madurai International Airport, offering effortless arrival and departure.
           </div>
         </div>
 
         {/* CTAs */}
         <div
-          className="mt-12 flex gap-5 items-center justify-center flex-wrap"
+          className="mt-12 flex gap-5 items-center justify-center flex-wrap rounded-2xl"
           style={{
             opacity: introOut ? 1 : 0,
             animation: introOut ? "rise 0.9s 1.05s both" : "none",
           }}
           
         >
-          <a  href="#contact" className="font-jost font-medium text-[12px] tracking-[0.22em] uppercase px-12 py-[18px] bg-[#895737] text-[#F3E9DC] border-none cursor-pointer transition-all duration-[350ms] shadow-[0_8px_40px_rgba(137,87,55,0.4)] hover:bg-[#C08552] hover:shadow-[0_12px_56px_rgba(192,133,82,0.45)]">
-            Reserve Your Stay
-          </a>
           <a
             href="#rooms"
-            className="font-jost font-medium text-[12px] tracking-[0.2em] uppercase text-[#F3E9DC]/80 no-underline px-5 py-[18px] border-b border-[#C08552]/40 transition-colors duration-300 hover:text-[#F3E9DC]"
+            className="group/btn relative overflow-hidden inline-flex items-center justify-center gap-2
+            rounded-2xl font-jost font-medium text-[12px] tracking-[0.22em] uppercase
+            px-12 py-[18px]
+            bg-[#895737] text-[#F3E9DC]
+            border-none cursor-pointer
+            transition-all duration-[350ms]
+            shadow-[0_8px_40px_rgba(137,87,55,0.4)]
+            hover:bg-[#C08552]
+            hover:shadow-[0_12px_56px_rgba(192,133,82,0.45)]"
           >
-            View Rooms ↓
+            <span className="relative z-10">Explore Our Suites ↓</span>
+
+            {/* Shine Effect */}
+            <div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
           </a>
+
         </div>
       </div>
 

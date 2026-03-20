@@ -12,12 +12,12 @@ import Footer       from "./components/Footer";
 
 /* ── Marquee strip ── */
 const MARQUEE_ITEMS = [
-  "Complete Privacy", "❧",
-  "Bespoke Dining",   "❧",
-  "Estate Exclusivity","❧",
-  "Two Rooms Only",   "❧",
-  "Curated Arrivals", "❧",
-  "Since 2019",       "❧",
+  "Private Luxury Stay", "❧",
+  "Boutique Hotel in Madurai", "❧",
+  "Two Exclusive Suites", "❧",
+  "Peaceful Retreat Experience", "❧",
+  "Perungudi · Madurai", "❧",
+  "Curated Guest Experience", "❧",
 ];
 
 function Marquee() {
@@ -28,8 +28,8 @@ function Marquee() {
           MARQUEE_ITEMS.map((text, j) => (
             <span
               key={`${i}-${j}`}
-              className={`font-jost text-[10px] tracking-[0.4em] uppercase flex-shrink-0 font-light ${
-                text === "❧" ? "text-[#C08552]" : "text-[#F3E9DC]/30"
+              className={`font-serif text-[15px] tracking-[0.4em] uppercase flex-shrink-0 font-light ${
+                text === "❧" ? "bg-clip-text text-transparent bg-gradient-to-r from-[#895737] via-[#C08552] to-[#895737]" : "bg-clip-text text-transparent bg-gradient-to-r from-[#d5966f] via-[#C08552] to-[#f19f6c]"
               }`}
             >
               {text}
@@ -54,7 +54,7 @@ function IntroLoader({ loaded, out }) {
           animation: loaded ? "rise 0.9s 0.2s cubic-bezier(0.16,1,0.3,1) both" : "none",
         }}
       >
-       <img src="/images/A1_logo_coffee.png" className="h-40 max-sm:h-30" alt="" />
+       <img src="/images/hotel_logo.png" className="h-40 max-sm:h-30" alt="" />
       </div>
 
       {/* Loader bar */}
