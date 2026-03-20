@@ -36,7 +36,7 @@ export default function Experience() {
         <Reveal>
           <div className="flex justify-between items-end mb-16 lg:mb-20 flex-wrap gap-8">
             <div>
-              <p className="font-jost text-[10px] tracking-[0.45em] uppercase text-[#895737] mb-5 font-light">
+              <p className="font-jost text-[12px] tracking-[0.4em] uppercase text-[#895737] mb-5 font-medium">
                 The Experience
               </p>
               <h2 className="font-display text-[clamp(36px,5vw,64px)] leading-none text-[#5E3023]">
@@ -44,8 +44,8 @@ export default function Experience() {
                 <em className="text-[#895737]">considered</em>
               </h2>
             </div>
-            <p className="font-jost text-[15px] text-[#5E3023]/40 max-w-xs leading-[1.9] font-light">
-              Nothing at Maison Aurel is accidental. From your arrival to your last morning,
+            <p className="font-jost text-[16px] text-[#5E3023]/80 max-w-xs leading-[1.8]">
+              Nothing at A1 is accidental. From your arrival to your last morning,
               every element has been thought through.
             </p>
           </div>
@@ -55,17 +55,17 @@ export default function Experience() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {FEATURES.map((item, i) => (
             <Reveal key={item.label} delay={i * 0.1}>
-              <div className="feature-card bg-[#F3E9DC] px-8 py-12 lg:py-[52px] h-full cursor-default">
+              <div className="feature-card bg-[#F3E9DC] px-8 py-12 lg:py-[52px] h-full cursor-default hover:bg-[#ebdccc] transition-colors duration-300">
                 <div className="font-display text-[28px] text-[#895737] mb-7">
                   {item.icon}
                 </div>
-                <p className="font-display text-[22px] text-[#5E3023] mb-3.5 leading-[1.2]">
+                <p className="font-display text-[22px] text-[#5E3023] mb-3.5 leading-[1.2] font-medium">
                   {item.label}
                 </p>
-                <p className="font-jost text-[13px] text-[#5E3023]/45 leading-[1.8] font-light mb-7">
+                <p className="font-jost text-[15px] text-[#5E3023]/80 leading-[1.7] mb-7">
                   {item.desc}
                 </p>
-                <span className="font-jost text-[9px] tracking-[0.35em] uppercase text-[#C08552] font-normal">
+                <span className="font-jost text-[11px] tracking-[0.3em] uppercase text-[#895737] font-medium">
                   {item.note}
                 </span>
               </div>

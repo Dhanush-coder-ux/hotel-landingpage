@@ -13,10 +13,11 @@ function CornerFlourish({ style = {} }) {
   );
 }
 
+// Updated words to focus on nature and grounding
 const HERO_WORDS = [
-  { text: "Where",   italic: false, delay: "0.35s", color: "#F3E9DC" },
-  { text: "Nature",  italic: true,  delay: "0.50s", color: "#C08552" },
-  { text: "Breathes",italic: false, delay: "0.65s", color: "#F3E9DC" },
+  { text: "Return",  italic: false, delay: "0.35s", color: "#F3E9DC" },
+  { text: "to the",  italic: true,  delay: "0.50s", color: "#C08552" },
+  { text: "Earth",   italic: false, delay: "0.65s", color: "#F3E9DC" },
 ];
 
 export default function Hero({ introOut }) {
@@ -49,16 +50,16 @@ export default function Hero({ introOut }) {
       {/* Center content */}
       <div className="relative z-[2] text-center px-8 max-w-[900px]">
 
-        {/* Eyebrow */}
+        {/* Eyebrow - Updated copy for a grounded feel */}
         <div className="overflow-hidden mb-9">
           <div
-            className="font-jost text-[11px] tracking-[0.5em] uppercase text-[#C08552]"
+            className="font-jost text-[12px] tracking-[0.4em] uppercase text-[#C08552] font-medium"
             style={{
               opacity: introOut ? 1 : 0,
               animation: introOut ? "rise 0.9s 0.1s both" : "none",
             }}
           >
-            Provence · France &nbsp;·&nbsp; Est. MMXIX &nbsp;·&nbsp; Two Rooms Only
+            Madurai &nbsp;·&nbsp; Est &nbsp;·&nbsp; Perungudi
           </div>
         </div>
 
@@ -81,16 +82,16 @@ export default function Hero({ introOut }) {
           ))}
         </h1>
 
-        {/* Tagline */}
+        {/* Tagline - Updated copy and visibility */}
         <div className="overflow-hidden">
           <div
-            className="font-jost text-[14px] tracking-[0.15em] text-[#F3E9DC]/45 font-light"
+            className="font-jost text-[16px] tracking-[0.15em] text-[#F3E9DC]/80 font-medium"
             style={{
               opacity: introOut ? 1 : 0,
               animation: introOut ? "rise 0.9s 0.85s both" : "none",
             }}
           >
-            The estate, in every season, is entirely yours
+            Find stillness in the heart of the countryside
           </div>
         </div>
 
@@ -103,12 +104,12 @@ export default function Hero({ introOut }) {
           }}
           
         >
-          <a  href="#contact" className="font-jost font-normal text-[12px] tracking-[0.22em] uppercase px-12 py-[18px] bg-[#895737] text-[#F3E9DC] border-none cursor-pointer transition-all duration-[350ms] shadow-[0_8px_40px_rgba(137,87,55,0.4)] hover:bg-[#C08552] hover:shadow-[0_12px_56px_rgba(192,133,82,0.45)]">
+          <a  href="#contact" className="font-jost font-medium text-[12px] tracking-[0.22em] uppercase px-12 py-[18px] bg-[#895737] text-[#F3E9DC] border-none cursor-pointer transition-all duration-[350ms] shadow-[0_8px_40px_rgba(137,87,55,0.4)] hover:bg-[#C08552] hover:shadow-[0_12px_56px_rgba(192,133,82,0.45)]">
             Reserve Your Stay
           </a>
           <a
             href="#rooms"
-            className="font-jost text-[12px] tracking-[0.2em] uppercase text-[#F3E9DC]/45 no-underline px-5 py-[18px] border-b border-[#C08552]/40 transition-colors duration-300 hover:text-[#F3E9DC]"
+            className="font-jost font-medium text-[12px] tracking-[0.2em] uppercase text-[#F3E9DC]/80 no-underline px-5 py-[18px] border-b border-[#C08552]/40 transition-colors duration-300 hover:text-[#F3E9DC]"
           >
             View Rooms ↓
           </a>
@@ -123,7 +124,7 @@ export default function Hero({ introOut }) {
           animation: introOut ? "rise 0.9s 1.4s both" : "none",
         }}
       >
-        <span className="font-jost text-[9px] tracking-[0.5em] uppercase text-[#F3E9DC]/25">Scroll</span>
+        <span className="font-jost text-[11px] tracking-[0.5em] uppercase text-[#F3E9DC]/70 font-medium">Scroll</span>
         <div className="w-px h-14 bg-gradient-to-b from-[#C08552] to-transparent leaf-float" />
       </div>
     </section>

@@ -1,6 +1,5 @@
 import { Reveal } from "../hooks/useReveal";
 
-
 const ROOMS = [
   {
     id: "I",
@@ -17,8 +16,7 @@ const ROOMS = [
       "Grasse Fragrance Collection",
     ],
     accent: "#C08552",
-    image:
-      "/images/image3.jpeg",
+    image: "/images/image3.jpeg",
   },
   {
     id: "II",
@@ -35,8 +33,7 @@ const ROOMS = [
       "Private Chef Arrangement",
     ],
     accent: "#895737",
-    image:
-"/images/image2.jpeg",
+    image: "/images/image2.jpeg",
   },
 ];
 
@@ -48,7 +45,7 @@ export default function Rooms() {
         {/* Heading */}
         <Reveal>
           <div className="text-center mb-20 lg:mb-28">
-            <p className="font-jost text-[10px] tracking-[0.45em] uppercase text-[#C08552] mb-5 font-light">
+            <p className="font-jost text-[12px] tracking-[0.4em] uppercase text-[#C08552] mb-5 font-medium">
               Accommodations
             </p>
             <h2 className="font-display text-[clamp(38px,6vw,72px)] text-[#F3E9DC]">
@@ -83,7 +80,7 @@ export default function Rooms() {
                         [isEven ? "right" : "left"]: 28,
                         fontSize: "clamp(80px,14vw,160px)",
                         color: "transparent",
-                        WebkitTextStroke: "1px rgba(243,233,220,0.1)",
+                        WebkitTextStroke: "1px rgba(243,233,220,0.15)",
                       }}
                     >
                       {room.id}
@@ -93,11 +90,11 @@ export default function Rooms() {
                   {/* Content */}
                   <div
                     className={`flex flex-col justify-center px-10 lg:px-[72px] py-16 lg:py-20 ${
-                      isEven ? "md:order-2" : "md:order-1"
-                    } ${isEven ? "bg-[#6B3829]" : "bg-[#622F22]"}`}
+                      isEven ? "bg-[#6B3829]" : "bg-[#622F22]"
+                    }`}
                   >
                     <p
-                      className="font-jost text-[10px] tracking-[0.4em] uppercase mb-5 font-light"
+                      className="font-jost text-[12px] tracking-[0.35em] uppercase mb-5 font-medium"
                       style={{ color: room.accent }}
                     >
                       Suite {room.id} · {room.area}
@@ -106,33 +103,32 @@ export default function Rooms() {
                       {room.name}
                     </h3>
                     <p
-                      className="font-baskerville text-[16px] italic mb-9 leading-[1.6]"
-                      style={{ color: "rgba(243,233,220,0.35)" }}
+                      className="font-baskerville text-[18px] italic mb-9 leading-[1.6] text-[#F3E9DC]/80"
                     >
                       {room.tagline}
                     </p>
                     <div
-                      className="w-9 h-[1.5px] mb-9 opacity-60"
+                      className="w-9 h-[1.5px] mb-9 opacity-80"
                       style={{ background: room.accent }}
                     />
-                    <p className="font-jost text-[14px] leading-[1.95] text-[#F3E9DC]/45 font-light mb-11">
+                    <p className="font-jost text-[16px] leading-[1.8] text-[#F3E9DC]/90 mb-11">
                       {room.body}
                     </p>
 
                     {/* Amenities */}
-                    <p className="font-jost text-[9px] tracking-[0.4em] uppercase text-[#F3E9DC]/22 mb-5 font-light">
+                    <p className="font-jost text-[11px] tracking-[0.35em] uppercase text-[#F3E9DC]/70 mb-5 font-medium">
                       Inclusions
                     </p>
                     {room.amenities.map((amenity) => (
                       <div
                         key={amenity}
-                        className="flex items-center gap-4 py-[11px] border-b border-[#F3E9DC]/[0.06]"
+                        className="flex items-center gap-4 py-[11px] border-b border-[#F3E9DC]/10"
                       >
                         <span
-                          className="w-1 h-1 rounded-full flex-shrink-0 opacity-70"
+                          className="w-1.5 h-1.5 rounded-full flex-shrink-0 opacity-90"
                           style={{ background: room.accent }}
                         />
-                        <span className="font-jost text-[13px] text-[#F3E9DC]/38 font-light">
+                        <span className="font-jost text-[15px] text-[#F3E9DC]/90">
                           {amenity}
                         </span>
                       </div>
@@ -140,7 +136,7 @@ export default function Rooms() {
 
                     {/* CTA */}
                     <button
-                      className="mt-11 self-start font-jost font-normal text-[11px] tracking-[0.28em] uppercase px-9 py-[14px] bg-transparent cursor-pointer transition-all duration-300"
+                      className="mt-11 self-start font-jost font-medium text-[12px] tracking-[0.25em] uppercase px-9 py-[14px] bg-transparent cursor-pointer transition-all duration-300"
                       style={{
                         border: `1.5px solid ${room.accent}`,
                         color: room.accent,
