@@ -53,7 +53,7 @@ export default function Hero({ introOut }) {
         {/* Eyebrow - Updated copy for a grounded feel */}
         <div className="overflow-hidden mb-9">
           <div
-            className="font-jost text-[14px] tracking-[0.4em] uppercase text-[#e4be9d] font-medium"
+            className="font-jost text-[14px] tracking-[0.4em] uppercase text-[#e4be9d] font-medium max-sm:text-[10px]"
             style={{
               opacity: introOut ? 1 : 0,
               animation: introOut ? "rise 0.9s 0.1s both" : "none",

@@ -1,11 +1,12 @@
 import { Reveal } from "../hooks/useReveal";
+import CallSelector from "./CallSelector";
 
 const NAV_COLS = [
   { title: "Explore", links: ["Suites", "Philosophy", "Guest Experience", "Check Availability"] },
   { title: "Estate", links: ["Privacy Policy", "Terms", "Press", "Careers"] },
 ];
 
-const SOCIALS = ["Instagram", "Pinterest", "Telegram"];
+const SOCIALS = [{'label':"Instagram","link":'#'}, {"label":"Pinterest","link":"#"}, {"label":"Telegram","link":"#"},{"label":"Email","link":"mailto:alrooms836@gmail.com"}];
 
 export default function Footer() {
   return (
@@ -48,39 +49,10 @@ export default function Footer() {
               </p>
 
               {/* CTA button */}
-              <a
-                href="tel:9677760535"
-                className="group/btn relative inline-flex items-center justify-center
-                font-jost text-[13px] tracking-[0.25em] uppercase
-                px-12 py-[18px] rounded-xl overflow-hidden
-                text-[#F3E9DC] bg-[#895737]
-                shadow-[0_10px_50px_rgba(137,87,55,0.35)]
-                transition-all duration-300 hover:scale-105"
-              >
-                {/* Icon */}
-                <svg
-                  className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover/btn:rotate-12"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 5a2 2 0 012-2h2.28a2 2 0 011.94 1.515l.516 2.064a2 2 0 01-.45 1.94l-1.27 1.27a16.001 16.001 0 006.586 6.586l1.27-1.27a2 2 0 011.94-.45l2.064.516A2 2 0 0119.72 19H22a2 2 0 012 2v1a1 1 0 01-1 1C10.745 23 1 13.255 1 1a1 1 0 011-1h1a2 2 0 012 2v2.28z"
-                  />
-                </svg>
-                <div className="mx-1"></div>
-                <span className="relative z-10">Call to Check Availability</span>
-
-                {/* shine */}
-                <span className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700
-                  bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-
-                {/* hover bg */}
-                <span className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition" />
-              </a>
+              <CallSelector
+  numbers={["9677760535", "9600726535"]}
+  label="Call to Check Availability"
+/>
 
             </div>
           </div>
@@ -130,9 +102,30 @@ export default function Footer() {
             Contact
           </p>
 
-          <p className="font-jost text-[16px] text-[#5E3023]/80 mb-2">
-            +91 96777 60535
-          </p>
+          <div className="flex gap-x-2 items-center">
+            <p className="font-jost text-[16px] text-[#5E3023]/80 mb-2">
+              +91 96777 60535,
+            </p>
+            <p className="font-jost text-[16px] text-[#5E3023]/80 mb-2">
+              +91 96007 26535
+            </p>
+          </div>
+
+          <div>
+            <a
+              href="mailto:alrooms836@gmail.com"
+              className="flex gap-2 font-jost text-[14px] text-/70 mb-2
+              transition hover:text-[#C08552]"
+            >
+              <svg className="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+              alrooms836@gmail.com
+            </a>
+          </div>
+          
 
           <p className="font-jost text-[14px] text-[#5E3023]/60 mb-4">
             Perungudi, Madurai
@@ -146,13 +139,13 @@ export default function Footer() {
           <div className="flex gap-3 flex-wrap">
             {SOCIALS.map((s) => (
               <a
-                key={s}
-                href="#"
+                key={s?.label}
+                href={s?.link}
                 className="px-3 py-2 rounded-lg text-[11px] uppercase tracking-[0.2em]
                 bg-white/30 backdrop-blur-md border border-white/30
                 text-[#5E3023]/70 transition hover:bg-white/50"
               >
-                {s}
+                {s.label}
               </a>
             ))}
           </div>
@@ -170,12 +163,12 @@ export default function Footer() {
         <div className="flex gap-6">
           {SOCIALS.map((s) => (
             <a
-              key={s}
-              href="#"
+              key={s?.label}
+              href={s?.link}
               className="font-jost text-[11px] tracking-[0.2em] text-[#5E3023]/60 uppercase
               transition hover:text-[#895737]"
             >
-              {s}
+              {s.label}
             </a>
           ))}
         </div>

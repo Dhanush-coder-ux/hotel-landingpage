@@ -55,7 +55,7 @@ export default function Quote() {
 
             {/* author */}
             <p className="font-jost text-[11px] tracking-[0.35em] text-[#F3E9DC]/60">
-              — — A1 Private Stay
+              — A1 Private Stay
             </p>
 
           </div>
