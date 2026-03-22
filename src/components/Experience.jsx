@@ -29,7 +29,7 @@ const FEATURES = [
 
 export default function Experience() {
   return (
-    <section className="relative py-28 lg:py-40 px-6 md:px-14 xl:px-20 bg-[#F3E9DC] overflow-hidden">
+    <section id="experience" className="relative py-28 lg:py-40 px-6 md:px-14 xl:px-20 bg-[#F3E9DC] overflow-hidden">
 
       {/* subtle background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#F3E9DC] via-[#f0e3d6] to-[#e7d4c3] opacity-70" />

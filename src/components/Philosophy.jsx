@@ -20,7 +20,7 @@ const STATS = [
 
 export default function Philosophy() {
   return (
-    <section className="relative px-6 md:px-12 lg:px-20 py-24 lg:py-32 bg-[#F3E9DC] overflow-hidden">
+    <section id="philosophy" className="relative px-6 md:px-12 lg:px-20 py-24 lg:py-32 bg-[#F3E9DC] overflow-hidden">
 
       {/* subtle background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#F3E9DC] to-[#EAD9C7] opacity-60" />

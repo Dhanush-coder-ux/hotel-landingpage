@@ -26,13 +26,13 @@ export default function Navbar() {
           MAIN NAVIGATION - Glassmorphism Effect
           ═══════════════════════════════════════════════════════ */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-[500] transition-all duration-700 ease-out ${
+        className={`fixed top-0 left-0 right-0 z-[600] transition-all duration-700 ease-out ${
           scrolled ? "py-3" : "py-5 lg:py-6"
         }`}
       >
         <div
           className={`max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-14 transition-all duration-700 ${
-            scrolled
+            scrolled && !menuOpen
               ? "bg-white/50 backdrop-blur-3xl border border-[#895737]/10 rounded-2xl mx-4 sm:mx-8 shadow-[0_8px_32px_rgba(94,48,35,0.12)]"
               : "bg-transparent"
           }`}
@@ -66,7 +66,9 @@ export default function Navbar() {
                 >
                   <span
                     className={`relative z-10 transition-colors duration-300 ${
-                      scrolled ? "bg-clip-text text-transparent bg-gradient-to-r from-[#895737] via-[#C08552] to-[#895737]" : "text-white"
+                      scrolled
+                        ? "bg-clip-text text-transparent bg-gradient-to-r from-[#895737] via-[#C08552] to-[#895737]"
+                        : "text-white"
                     } group-hover:text-`}
                   >
                     {link}
@@ -93,13 +95,11 @@ export default function Navbar() {
               {/* Glass overlay */}
               <span className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500" />
 
-              {/* Shine sweep (NEW 🔥) */}
+              {/* Shine sweep */}
               <span className="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
 
               {/* Text */}
-              <span className="relative z-10 text-[#F3E9DC]">
-                Reserve Now
-              </span>
+              <span className="relative z-10 text-[#F3E9DC]">Reserve Now</span>
 
               {/* Arrow */}
               <svg
@@ -130,7 +130,9 @@ export default function Navbar() {
               {[0, 1, 2].map((i) => (
                 <span
                   key={i}
-                  className={`block w-6 h-[2px] bg-[#895737] transition-all duration-500 ease-out ${
+                  className={`block w-6 h-[2px] transition-all duration-500 ease-out ${
+                    menuOpen ? "bg-[#F3E9DC]" : "bg-[#895737]"
+                  } ${
                     menuOpen && i === 0
                       ? "rotate-45 translate-y-[7px]"
                       : menuOpen && i === 2
@@ -138,7 +140,7 @@ export default function Navbar() {
                       : ""
                   } ${menuOpen && i === 1 ? "opacity-0 scale-0" : ""}`}
                   style={{
-                    boxShadow: menuOpen ? "0 0 8px rgba(137, 87, 55, 0.4)" : "none",
+                    boxShadow: menuOpen ? "0 0 8px rgba(243, 233, 220, 0.4)" : "none",
                   }}
                 />
               ))}
@@ -175,9 +177,7 @@ export default function Navbar() {
           {/* Top right glow */}
           <div
             className={`absolute -top-20 -right-20 w-80 h-80 rounded-full blur-[120px] transition-all duration-1000 ${
-              menuOpen
-                ? "opacity-30 scale-100"
-                : "opacity-0 scale-50"
+              menuOpen ? "opacity-30 scale-100" : "opacity-0 scale-50"
             }`}
             style={{
               background:
@@ -188,9 +188,7 @@ export default function Navbar() {
           {/* Bottom left glow */}
           <div
             className={`absolute -bottom-20 -left-20 w-80 h-80 rounded-full blur-[120px] transition-all duration-1000 delay-200 ${
-              menuOpen
-                ? "opacity-30 scale-100"
-                : "opacity-0 scale-50"
+              menuOpen ? "opacity-30 scale-100" : "opacity-0 scale-50"
             }`}
             style={{
               background:
@@ -266,8 +264,7 @@ export default function Navbar() {
               onClick={() => setMenuOpen(false)}
               className="relative font-jost text-[13px] tracking-[0.25em] uppercase font-semibold px-12 py-5 overflow-hidden group flex items-center justify-center gap-3 w-full"
               style={{
-                background:
-                  "linear-gradient(135deg, #895737 0%, #C08552 100%)",
+                background: "linear-gradient(135deg, #895737 0%, #C08552 100%)",
                 boxShadow:
                   "0 8px 32px rgba(137, 87, 55, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
                 borderRadius: "12px",
